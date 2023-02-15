@@ -5,7 +5,7 @@ const WorkoutForm = () => {
     const { dispatch } = useWorkoutsContext();
 
     const [title, setTitle] = useState("");
-    const [load, setLoad] = useState("");
+    const [load, setLoad] = useState("0");
     const [reps, setReps] = useState("");
     // state to display error from form
     const [error, setError] = useState(null);
@@ -45,7 +45,7 @@ const WorkoutForm = () => {
         // reset error state to null
         if (response.ok) {
             setTitle("");
-            setLoad("");
+            setLoad("0");
             setReps("");
             setError(null);
             setEmptyFields([]);

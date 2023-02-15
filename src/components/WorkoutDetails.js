@@ -1,7 +1,7 @@
 import { useWorkoutsContext } from "../hooks/useWorkoutsContext";
 
 // date fns
-import formatDistanceToNow from 'date-fns/formatDistanceToNow';
+import formatDistanceToNow from "date-fns/formatDistanceToNow";
 
 const WorkoutDetails = ({ workout }) => {
     const { dispatch } = useWorkoutsContext();
@@ -16,19 +16,34 @@ const WorkoutDetails = ({ workout }) => {
         }
     };
 
+    // renders load if workout inlcuded it, otherwise null
+    const loadDisplay = workout.load ? (
+        <p>
+            <strong>Load (kg): </strong>
+            {workout.load}
+        </p>
+    ) : null;
+
     return (
         <div className="workout-details">
             <h4>{workout.title}</h4>
-            <p>
+            {loadDisplay}
+            {/* <p>
                 <strong>Load (kg): </strong>
                 {workout.load}
-            </p>
+            </p> */}
             <p>
                 <strong>Reps: </strong>
                 {workout.reps}
             </p>
-            <p>{formatDistanceToNow(new Date(workout.createdAt), { addSuffix: true })}</p>
-            <span className="material-symbols-outlined" onClick={handleClick}>delete</span>
+            <p>
+                {formatDistanceToNow(new Date(workout.createdAt), {
+                    addSuffix: true,
+                })}
+            </p>
+            <span className="material-symbols-outlined" onClick={handleClick}>
+                delete
+            </span>
         </div>
     );
 };
