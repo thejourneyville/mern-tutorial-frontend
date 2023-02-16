@@ -7,7 +7,7 @@ const Navbar = () => {
                 {/* setting up a Link to the home page 
                 using react-router-dom's library */}
                 <Link to="/">
-                    <h1>Workout Buddy</h1>
+                    <h1>Hey... Workout, buddy!</h1>
                 </Link>
             </div>
         </header>
