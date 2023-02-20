@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import { useLogout } from "../hooks/useLogout";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const Navbar = () => {
     // logout function destructured from useLogout hook
     const { logout } = useLogout();
+    const { user } = useAuthContext();
 
     // handleLogout function invokes the logout function from useLogout
     const handleLogout = () => {
@@ -20,13 +22,18 @@ const Navbar = () => {
                 </Link>
                 <nav>
                     {/* button created to logout */}
-                    <div>
-                        <button onClick={handleLogout}>Log out</button>
-                    </div>
-                    <div>
+                    {user && (
+                        <div>
+                            <span>{user.email}</span>
+                            <button onClick={handleLogout}>Log out</button>
+                        </div>
+                    )}
+                    {!user && (
+                        <div>
                         <Link to="/login">Login</Link>
                         <Link to="/signup">Signup</Link>
-                    </div>
+                        </div>
+                    )}
                 </nav>
             </div>
         </header>
