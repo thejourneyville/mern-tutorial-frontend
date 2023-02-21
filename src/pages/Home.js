@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useWorkoutsContext } from "../hooks/useWorkoutsContext";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 // components
 import WorkoutDetails from "../components/WorkoutDetails";
@@ -10,6 +11,8 @@ const Home = () => {
     // 1) workouts array which holds the workout objects
     // 2) dispatch function which carries the action (type, and if needed, payload)
     const { workouts, dispatch } = useWorkoutsContext();
+    // getting user credentials;
+    const {user} = useAuthContext();
 
     // useState option
     // state is holding workouts being fetched from our database
@@ -20,7 +23,11 @@ const Home = () => {
         // an async function to make a request to our backend
         const fetchWorkouts = async () => {
             // request promise binded to 'response'
-            const response = await fetch("/api/workouts");
+            const response = await fetch("/api/workouts", {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            });
             // response is converted to an object which can be used in React
             const json = await response.json();
             // if the response is tested for success and contains expected data
@@ -34,12 +41,16 @@ const Home = () => {
             }
         };
         // invoked function
+        // if user is present, try to fetch the workouts
+        if (user) {
         fetchWorkouts();
+        }
         // old
         // dependency array of useEffect only runs on first render <-- need to update
 
         // added 'dispatch' function to dependency array
-    }, [dispatch]);
+        // added 'user' function to dependency array
+    }, [dispatch, user]);
 
     return (
         <div className="home">

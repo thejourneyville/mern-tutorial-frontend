@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useWorkoutsContext } from "../hooks/useWorkoutsContext";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const WorkoutForm = () => {
     const { dispatch } = useWorkoutsContext();
+    const { user } = useAuthContext();
 
     const [title, setTitle] = useState("");
     const [load, setLoad] = useState("0");
@@ -16,6 +18,12 @@ const WorkoutForm = () => {
     const handleSubmit = async (e) => {
         // prevents from refreshing the screen when the form is cleared
         e.preventDefault();
+
+        // if no use is detected
+        if (!user) {
+            setError("You must be logged in");
+            return;
+        }
         // creating object from state(s)
         const workout = {
             title,
@@ -30,6 +38,7 @@ const WorkoutForm = () => {
             // header explains the type of the content
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${user.token}`,
             },
         });
         // we then also 'await' for the response from the POST request
@@ -67,21 +76,21 @@ const WorkoutForm = () => {
                 onChange={(e) => setTitle(e.target.value)}
                 value={title}
                 // if empty array include 'title' use 'error' classname
-                className={emptyFields.includes('title') ? 'error' : ''}
+                className={emptyFields.includes("title") ? "error" : ""}
             />
             <label>Load (in kg):</label>
             <input
                 type="number"
                 onChange={(e) => setLoad(e.target.value)}
                 value={load}
-                className={emptyFields.includes('load') ? 'error' : ''}
+                className={emptyFields.includes("load") ? "error" : ""}
             />
             <label>Reps:</label>
             <input
                 type="number"
                 onChange={(e) => setReps(e.target.value)}
                 value={reps}
-                className={emptyFields.includes('reps') ? 'error' : ''}
+                className={emptyFields.includes("reps") ? "error" : ""}
             />
             <button>Add Workout</button>
             {/* display error if true with error state */}
